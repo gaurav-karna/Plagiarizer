@@ -3,6 +3,9 @@ import argparse
 import os
 from plagiarizer import *
 
+PLAGIARISM_COUNTER = 0
+TOTAL_TUPLE_COUNT = 0
+
 
 def start():
     # compile list of synonyms in a var
@@ -11,7 +14,30 @@ def start():
     # syn list is a 2-D list of words. All words in a subarray should be treated equally
     syn_dict = make_syn_dict(syn_list)
 
-    print(syn_dict)
+    # parse all data as a str from both files into global variables that will be sliced every time a tuple is generated
+    global FILE_ONE
+    FILE_ONE = get_file_data(ARGS.fileone)
+    global FILE_TWO
+    FILE_TWO = get_file_data(ARGS.filetwo)
+
+    # generate N-tuples sequentially, and pass those tuples into string comparison, and increment TOTAL_TUPLE_COUNT
+
+    while (len(FILE_ONE) >= ARGS.tuple) or (len(FILE_TWO) >= ARGS.tuple):
+        file_one_tuple = FILE_ONE[0 : ARGS.tuple]
+        FILE_ONE = FILE_ONE[1:]
+        print(FILE_ONE)
+        file_two_tuple = FILE_TWO[0 : ARGS.tuple]
+        FILE_TWO = FILE_TWO[1:]
+
+        # at this stage, we have generated two tuples that we can then compare...
+        if check_plagiarism(file_one_tuple, file_two_tuple, syn_dict, ARGS.tuple):
+            # if string comparison determines plagiarism, then we add to PLAGIARISM_COUNTER
+            global PLAGIARISM_COUNTER
+            PLAGIARISM_COUNTER += 1
+        # percentage determined by dividing by TOTAL_TUPLE_COUNT
+        global TOTAL_TUPLE_COUNT
+        TOTAL_TUPLE_COUNT += 1
+    report(PLAGIARISM_COUNTER, TOTAL_TUPLE_COUNT)
 
 
 def get_args():
