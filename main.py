@@ -25,7 +25,7 @@ def start():
     while (len(FILE_ONE) >= ARGS.tuple) or (len(FILE_TWO) >= ARGS.tuple):
         file_one_tuple = FILE_ONE[0 : ARGS.tuple]
         FILE_ONE = FILE_ONE[1:]
-        print(FILE_ONE)
+        # print(FILE_ONE)
         file_two_tuple = FILE_TWO[0 : ARGS.tuple]
         FILE_TWO = FILE_TWO[1:]
 
